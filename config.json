@@ -1,0 +1,8 @@
+{
+  "fonts": {
+    "name_font": "path/to/name_font.ttf",
+    "time_font": "path/to/time_font.ttf",
+    "message_font": "path/to/message_font.ttf"
+  },
+  "profile_picture_dict_path": "path/to/profile_picture_dict.json"
+}

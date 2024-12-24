@@ -6,6 +6,10 @@ import os
 from tkinter import Tk, filedialog
 import json
 
+# Load configuration from config.json
+with open('config.json') as config_file:
+    config = json.load(config_file)
+
 # CONSTANTS
 WORLD_WIDTH = 1777
 WORLD_Y_INIT = 231
@@ -32,17 +36,17 @@ MESSAGE_DY = 80
 MESSAGE_POSITIONS = [(MESSAGE_X, MESSAGE_Y_INIT+i*MESSAGE_DY) for i in range(5)]
 
 # Text fonts
-name_font = ImageFont.truetype('fonts/whitneymedium.otf', NAME_FONT_SIZE)
-time_font = ImageFont.truetype('fonts/whitneymedium.otf', TIME_FONT_SIZE)
-message_font = ImageFont.truetype('fonts/whitneybook.otf', MESSAGE_FONT_SIZE)
+name_font = ImageFont.truetype(config['fonts']['name_font'], NAME_FONT_SIZE)
+time_font = ImageFont.truetype(config['fonts']['time_font'], TIME_FONT_SIZE)
+message_font = ImageFont.truetype(config['fonts']['message_font'], MESSAGE_FONT_SIZE)
 
 # Profile picture dictionary
-with open('profile_pictures/profile_pic_dict.json') as file:
+with open(config['profile_picture_dict_path']) as file:
   profile_pic_dict = json.loads(file.read())
 
 def generate_chat(messages, name, time, profpic_file):
     name_text = name
-    time_text = f'Today at {time} PM'
+    time_text = f'Today at {time}'
     time_position = (NAME_POSITION[0] + name_font.getlength(name) + NAME_TIME_SPACING, TIME_POSITION_Y)
     # Open proile picture
     prof_pic = Image.open(profpic_file)
@@ -69,7 +73,7 @@ def get_filename():
     return filedialog.askopenfilename()
 
 def save_images(lines, init_time, dt=30):
-    os.system(f'mkdir chat')
+    os.makedirs('chat', exist_ok=True)
     name_up_next = True # first line starts with name
     current_time = init_time
     current_name = None
@@ -93,7 +97,7 @@ def save_images(lines, init_time, dt=30):
         current_lines.append(line)
         image = generate_chat(messages = current_lines,
                               name = current_name,
-                              time = f'{current_time.hour % 12}:{current_time.minute}',
+                              time = f'{current_time.hour % 12}:{current_time.minute} {"AM" if current_time.hour < 12 else "PM"}',
                               profpic_file = f'profile_pictures/{profile_pic_dict[current_name]}')
         image.save(f'chat\\{msg_number:03d}{current_name[0]}.png')
         # update time and msg_number for saving
