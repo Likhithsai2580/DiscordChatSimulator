@@ -34,7 +34,20 @@ To run
    ``profile_pic_dict.json`` with names (corresponding to the names in
    whatever script txt file you want to convert) and corresponding
    profile pictures.
-4. Inside the repository folder, run ``python generate_chat.py``. It
+4. Inside the repository folder, create a ``config.json`` file with the following structure:
+
+   ::
+   
+      {
+         "fonts": {
+            "name_font": "path/to/name_font.ttf",
+            "time_font": "path/to/time_font.ttf",
+            "message_font": "path/to/message_font.ttf"
+         },
+         "profile_picture_dict_path": "path/to/profile_picture_dict.json"
+      }
+
+5. Inside the repository folder, run ``python generate_chat.py``. It
    will prompt you to choose a ``.txt`` file of a script (format
    outlines above) somewhere on your computer. The images will be saved
    in a newly created ``chat/`` folder with the form ``007T.png`` where
